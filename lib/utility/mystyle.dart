@@ -4,6 +4,13 @@ class MyStyle {
   Color mainColor = Colors.pink;
   Color darkColor = Colors.blue.shade300;
 
+  InputDecoration myInputDecoration(String string) {
+    return InputDecoration(
+      labelText: string,
+      border: OutlineInputBorder(),
+    );
+  }
+
   Text showTexth1(String string) => Text(
         string,
         style: TextStyle(
