@@ -51,6 +51,7 @@ class _AuthenState extends State<Authen> {
             print('login ');
             normalDialog(context, 'กรุณากรอก ทุกช่อง');
           } else {
+            print('Logon : $user');
             checkAuthen();
           }
         },
