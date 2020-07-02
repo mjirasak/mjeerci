@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mjtrn02/widget/showInfomation.dart';
+import 'package:mjtrn02/widget/showmyordershop.dart';
+import 'package:mjtrn02/widget/showmyproduct.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Mainshop extends StatefulWidget {
   @override
@@ -6,13 +10,33 @@ class Mainshop extends StatefulWidget {
 }
 
 class _MainshopState extends State<Mainshop> {
+  Widget currentwidget = ShowMyOrderShop();
+
+  String idShop, nameShop;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    findShop();
+  }
+
+  Future<Null> findShop() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    setState(() {
+      idShop = preferences.getString('id');
+      nameShop = preferences.getString('name');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: showDrawer(),
       appBar: AppBar(
-        title: Text('Wellcom Shop'),
+        title: Text(nameShop == null ? 'Wellcom Shop ' : 'ข้าม $nameShop'),
       ),
+      body: currentwidget,
     );
   }
 
@@ -35,6 +59,9 @@ class _MainshopState extends State<Mainshop> {
         subtitle: Text('ดูรายการ Order'),
         onTap: () {
           Navigator.pop(context);
+          setState(() {
+            currentwidget = ShowMyOrderShop();
+          });
         },
       );
 
@@ -44,6 +71,9 @@ class _MainshopState extends State<Mainshop> {
         subtitle: Text('ดูรายการสินค้า'),
         onTap: () {
           Navigator.pop(context);
+          setState(() {
+            currentwidget = ShowMyProduct();
+          });
         },
       );
 
@@ -53,6 +83,12 @@ class _MainshopState extends State<Mainshop> {
         subtitle: Text('ดูรายละเอียดสินค้า'),
         onTap: () {
           Navigator.pop(context);
+          setState(() {
+            print('id aaaaaa  $idShop');
+            currentwidget = ShowInfomation(
+              idShop: idShop,
+            );
+          });
         },
       );
 }
