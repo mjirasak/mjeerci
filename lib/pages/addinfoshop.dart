@@ -1,7 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mjtrn02/utility/myconstant.dart';
 import 'package:mjtrn02/utility/mystyle.dart';
 import 'package:mjtrn02/utility/normaldialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddInfoShop extends StatefulWidget {
   @override
@@ -9,7 +12,7 @@ class AddInfoShop extends StatefulWidget {
 }
 
 class _AddInfoShopState extends State<AddInfoShop> {
-  String dateTimeString, gender, educateString, address, phone;
+  String dateTimeString, gender, educateString, address, phone, id;
   List<String> educates = [
     'ต่ำกว่า ป.6',
     'มัธยมต้น',
@@ -18,6 +21,11 @@ class _AddInfoShopState extends State<AddInfoShop> {
     'ปริญาโท',
     'ปริญาเอก'
   ];
+
+  Future<Null> findId() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    id = preferences.getString('id');
+  }
 
   @override
   void initState() {
@@ -48,9 +56,7 @@ class _AddInfoShopState extends State<AddInfoShop> {
           } else if (educateString == null) {
             normalDialog(context, 'โปรดเลือกการศึกษา');
           } else {
-
-
-            
+            editValueOnMySQL();
           }
         },
         child: Icon(Icons.cloud_upload),
@@ -166,4 +172,18 @@ class _AddInfoShopState extends State<AddInfoShop> {
           decoration: MyStyle().myInputDecoration('เบอร์โทรศัพท์'),
         ),
       );
+
+  Future<Null> editValueOnMySQL() async {
+    String url =
+        '${MyConstant().domain}/RCI/editUserWhereIdUng.php?isAdd=true&CreateDate=$dateTimeString&Address=$educateString&Phone=$phone&Gendel=$gender&Education=$educateString&id=$id';
+
+    await Dio().get(url).then((value) {
+      if (value.toString() == 'true') {
+        print('id = $id ');
+        Navigator.pop(context);
+      } else {
+        normalDialog(context, 'โปรดกรุณาพยายามอีกครั้ง');
+      }
+    });
+  }
 }
