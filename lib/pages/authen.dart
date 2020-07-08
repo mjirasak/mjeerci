@@ -15,28 +15,69 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
   String user, password;
+  bool status = true;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    findLogin();
+  }
+
+  Future<Null> findLogin() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String typeLogin = preferences.getString('Type');
+    print('TypeLogin = $typeLogin');
+
+    if (typeLogin == null || typeLogin.isEmpty) {
+      setState(() {
+        status = false;
+      });
+    } else {
+      switch (typeLogin) {
+        case 'User':
+          routeToService(Mainuser());
+
+          break;
+        case 'Shop':
+          routeToService(Mainshop());
+
+          break;
+        default:
+      }
+    }
+  }
+
+  void routeToService(Widget widget) {
+    MaterialPageRoute route = MaterialPageRoute(
+      builder: (context) => widget,
+    );
+    Navigator.pushAndRemoveUntil(context, route, (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              MyStyle().showLogo(),
-              MyStyle().showTexth1('Show App name'),
-              userForm(),
-              passwordForm(),
-              SizedBox(
-                height: 8.0,
+      body: status
+          ? MyStyle().showProgress()
+          : Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    MyStyle().showLogo(),
+                    MyStyle().showTexth1('Show App name'),
+                    userForm(),
+                    passwordForm(),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    loginButton(),
+                    registerButton(),
+                  ],
+                ),
               ),
-              loginButton(),
-              registerButton(),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 

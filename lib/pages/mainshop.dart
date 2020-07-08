@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mjtrn02/utility/mystyle.dart';
 import 'package:mjtrn02/widget/showInfomation.dart';
 import 'package:mjtrn02/widget/showmyordershop.dart';
 import 'package:mjtrn02/widget/showmyproduct.dart';
@@ -42,12 +43,17 @@ class _MainshopState extends State<Mainshop> {
 
   Drawer showDrawer() {
     return Drawer(
-      child: Column(
+      child: Stack(
         children: <Widget>[
-          UserAccountsDrawerHeader(accountName: null, accountEmail: null),
-          menuMyOrder(),
-          menuMyProduct(),
-          menuMyInfomation(),
+          Column(
+            children: <Widget>[
+              UserAccountsDrawerHeader(accountName: null, accountEmail: null),
+              menuMyOrder(),
+              menuMyProduct(),
+              menuMyInfomation(),
+            ],
+          ),
+          MyStyle().menuSignOut(context),
         ],
       ),
     );
