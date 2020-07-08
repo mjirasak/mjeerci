@@ -62,6 +62,19 @@ class MyStyle {
         ),
       );
 
+  Widget showTexth2(String string) => Container(
+        margin: EdgeInsets.only(left: 8),
+        child: Text(
+          string,
+          style: TextStyle(
+            color: darkColor,
+            fontSize: 18.0,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Pacifico',
+          ),
+        ),
+      );
+
   Container showLogo() {
     return Container(
       width: 150.0,
