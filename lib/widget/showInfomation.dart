@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:mjtrn02/models/usermodel.dart';
 import 'package:mjtrn02/pages/addinfoshop.dart';
+import 'package:mjtrn02/pages/editInfo.dart';
 import 'package:mjtrn02/utility/myconstant.dart';
 import 'package:mjtrn02/utility/mystyle.dart';
 
@@ -53,15 +54,7 @@ class _ShowInfomationState extends State<ShowInfomation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          MaterialPageRoute route = MaterialPageRoute(
-            builder: (context) => AddInfoShop(),
-          );
-          Navigator.push(context, route).then((value) => null);
-        },
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: status ? addButton(context) : editButton(context),
       body: status2
           ? MyStyle().showProgress()
           : status
@@ -69,6 +62,30 @@ class _ShowInfomationState extends State<ShowInfomation> {
                   child: MyStyle().showTexth1('ยังไม่มีข้้อมูล'),
                 )
               : showContent(),
+    );
+  }
+
+  FloatingActionButton addButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (context) => AddInfoShop(),
+        );
+        Navigator.push(context, route).then((value) => null);
+      },
+      child: Icon(Icons.add),
+    );
+  }
+
+  FloatingActionButton editButton(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () {
+        MaterialPageRoute route = MaterialPageRoute(
+          builder: (context) => EditInfoShop(userModel: userModel,),
+        );
+        Navigator.push(context, route).then((value) => null);
+      },
+      child: Icon(Icons.edit),
     );
   }
 
@@ -116,7 +133,7 @@ class _ShowInfomationState extends State<ShowInfomation> {
     );
   }
 
-    ListTile showPhone() {
+  ListTile showPhone() {
     return ListTile(
       leading: Icon(
         Icons.label_important,
@@ -126,5 +143,4 @@ class _ShowInfomationState extends State<ShowInfomation> {
       title: MyStyle().showTexth2(userModel.phone),
     );
   }
-
 }
