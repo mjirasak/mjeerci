@@ -27,6 +27,7 @@ class _ShowInfomationState extends State<ShowInfomation> {
     super.initState();
     setState(() {
       idShop = widget.idShop;
+      readInfo();
       print('id BBBBB $idShop');
     });
   }
@@ -71,7 +72,7 @@ class _ShowInfomationState extends State<ShowInfomation> {
         MaterialPageRoute route = MaterialPageRoute(
           builder: (context) => AddInfoShop(),
         );
-        Navigator.push(context, route).then((value) => null);
+        Navigator.push(context, route).then((value) => readInfo());
       },
       child: Icon(Icons.add),
     );
@@ -81,9 +82,11 @@ class _ShowInfomationState extends State<ShowInfomation> {
     return FloatingActionButton(
       onPressed: () {
         MaterialPageRoute route = MaterialPageRoute(
-          builder: (context) => EditInfoShop(userModel: userModel,),
+          builder: (context) => EditInfoShop(
+            userModel: userModel,
+          ),
         );
-        Navigator.push(context, route).then((value) => null);
+        Navigator.push(context, route).then((value) => readInfo());
       },
       child: Icon(Icons.edit),
     );

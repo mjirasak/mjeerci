@@ -13,14 +13,7 @@ class AddInfoShop extends StatefulWidget {
 
 class _AddInfoShopState extends State<AddInfoShop> {
   String dateTimeString, gender, educateString, address, phone, id;
-  List<String> educates = [
-    'ต่ำกว่า ป.6',
-    'มัธยมต้น',
-    'มัธยมปลาย',
-    'ปริญาตรี',
-    'ปริญาโท',
-    'ปริญาเอก'
-  ];
+  List<String> eductions;
 
   Future<Null> findId() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -32,6 +25,8 @@ class _AddInfoShopState extends State<AddInfoShop> {
     // TODO: implement initState
     super.initState();
     findCurrentTime();
+
+    eductions = MyConstant().educates;
   }
 
   Future<Null> findCurrentTime() async {
@@ -82,7 +77,7 @@ class _AddInfoShopState extends State<AddInfoShop> {
   Container educateGroup() => Container(
         child: DropdownButton<String>(
           value: educateString,
-          items: educates
+          items: eductions
               .map(
                 (e) => DropdownMenuItem(
                   child: Text(e),
